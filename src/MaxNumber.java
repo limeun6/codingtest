@@ -1,8 +1,5 @@
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Comparator;
 
 public class MaxNumber {
 
@@ -15,28 +12,31 @@ public class MaxNumber {
 
 	public static String solution(int[] numbers) {
 		String answer = "";
-
-		for (int j = 0; j < numbers.length; j++) {
-			for (int i = 0; i < numbers.length - (1 + j); i++) {
-				String onetwo = String.valueOf(numbers[i]) + String.valueOf(numbers[i + 1]);
-				String twoone = String.valueOf(numbers[i + 1]) + String.valueOf(numbers[i]);
-				if (Integer.parseInt(onetwo) < Integer.parseInt(twoone)) {
-					int tmp = numbers[i];
-					numbers[i] = numbers[i + 1];
-					numbers[i + 1] = tmp;
-				}
-//				for(int n =0; n<numbers.length;n++) {
-//					System.out.print(numbers[n]+",");
-//				}
-//				System.out.println();
+		String[] numbersArray = new String[numbers.length];
+		//값을 리스트에 저장
+		for(int i=0;i<numbers.length;i++) {
+			numbersArray[i]= String.valueOf(numbers[i]);
+		}
+		//비교&정렬
+		Arrays.sort(numbersArray,new Comparator<String>() {
+			@Override
+			public int compare(String pre, String nex) {
+				String onetwo=pre+nex;
+				String twoone=nex+pre;
+				return twoone.compareTo(onetwo);
 			}
-			answer = String.valueOf(numbers[numbers.length - 1 - j]) + answer;
-//			System.out.println("==="+answer+"========");	
+		});
+		//값을 String에 저장
+		StringBuffer strBuff = new StringBuffer();
+		for(int i=0;i<numbersArray.length;i++) {
+			strBuff.append(numbersArray[i]);
+			
 		}
-		if ("0".equals(answer.substring(0, 1))) {
-			answer = "0";
+		//0일경우 0을 출력
+		if ("0".equals(strBuff.substring(0, 1))) {
+			return "0";
 		}
-		return answer;
+		return strBuff.toString();
 	}
 
 }
